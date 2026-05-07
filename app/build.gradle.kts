@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.mchavez.musicapp"
-    compileSdk = 35
+    namespace = "com.example.mchavezmusicapp"
+    compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.mchavez.musicapp"
-        minSdk = 24
-        targetSdk = 35
+        applicationId = "com.example.mchavezmusicapp"
+        minSdk = 26
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
     }
@@ -47,6 +47,11 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("io.coil-kt:coil-compose:2.7.0")
+
+    testImplementation("junit:junit:4.13.2")
+
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)

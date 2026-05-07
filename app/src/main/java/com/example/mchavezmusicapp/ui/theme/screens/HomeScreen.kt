@@ -28,6 +28,9 @@ import coil.compose.AsyncImage
 import com.example.mchavezmusicapp.data.model.Album
 import com.example.mchavezmusicapp.data.network.RetrofitClient
 import com.example.mchavezmusicapp.navigation.Screen
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.mchavezmusicapp.ui.theme.MChavezMusicAppTheme
+import androidx.navigation.compose.rememberNavController
 
 val Purple = Color(0xFF7B2FBE)
 val LightPurple = Color(0xFFB06FE8)
@@ -325,5 +328,13 @@ fun MiniPlayer(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun HomeScreenPreview() {
+    MChavezMusicAppTheme {
+        HomeScreen(navController = rememberNavController())
     }
 }

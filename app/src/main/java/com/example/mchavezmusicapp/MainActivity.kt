@@ -10,7 +10,6 @@ import com.example.mchavezmusicapp.ui.theme.MChavezMusicAppTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             MChavezMusicAppTheme {
                 AppNavigation()
