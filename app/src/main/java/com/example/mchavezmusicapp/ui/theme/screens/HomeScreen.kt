@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -30,7 +31,6 @@ import com.example.mchavezmusicapp.navigation.Screen
 
 val Purple = Color(0xFF7B2FBE)
 val LightPurple = Color(0xFFB06FE8)
-val DarkBg = Color(0xFF1A1A2E)
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -52,48 +52,58 @@ fun HomeScreen(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize().background(Color(0xFFF5F5F5))) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 80.dp)
+            contentPadding = PaddingValues(bottom = 90.dp)
         ) {
             item {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(160.dp)
-                        .background(
-                            Brush.verticalGradient(listOf(Purple, LightPurple))
-                        )
-                        .padding(20.dp),
+                        .height(170.dp)
+                        .background(Brush.verticalGradient(listOf(Purple, LightPurple)))
+                        .statusBarsPadding()
+                        .padding(horizontal = 20.dp, vertical = 16.dp),
                     contentAlignment = Alignment.BottomStart
                 ) {
                     Column {
-                        Text("Good Morning!", color = Color.White.copy(alpha = 0.8f), fontSize = 14.sp)
-                        Text("Miguel Chavez", color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                        Text(
+                            "Good Morning!",
+                            color = Color.White.copy(alpha = 0.85f),
+                            fontSize = 14.sp
+                        )
+                        Text(
+                            "Miguel Chavez",
+                            color = Color.White,
+                            fontSize = 26.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }
 
             item {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 14.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Albums", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                    Text("Albums", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color(0xFF1A1A1A))
                     Text("See more", color = Purple, fontSize = 13.sp)
                 }
             }
 
             item {
-                if (isLoading) {
-                    Box(modifier = Modifier.fillMaxWidth().height(180.dp), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(color = Purple)
-                    }
-                } else if (error != null) {
-                    Box(modifier = Modifier.fillMaxWidth().height(180.dp), contentAlignment = Alignment.Center) {
-                        Text("Error: $error", color = Color.Red)
-                    }
-                } else {
-                    LazyRow(
+                when {
+                    isLoading -> Box(
+                        modifier = Modifier.fillMaxWidth().height(190.dp),
+                        contentAlignment = Alignment.Center
+                    ) { CircularProgressIndicator(color = Purple) }
+                    error != null -> Box(
+                        modifier = Modifier.fillMaxWidth().height(190.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text("Error al cargar", color = Color.Red) }
+                    else -> LazyRow(
                         contentPadding = PaddingValues(horizontal = 16.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
@@ -108,11 +118,13 @@ fun HomeScreen(navController: NavController) {
 
             item {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 14.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Recently Played", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                    Text("Recently Played", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color(0xFF1A1A1A))
                     Text("See more", color = Purple, fontSize = 13.sp)
                 }
             }
@@ -141,9 +153,9 @@ fun HomeScreen(navController: NavController) {
 fun AlbumCard(album: Album, onClick: () -> Unit) {
     Box(
         modifier = Modifier
-            .width(160.dp)
-            .height(180.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .width(165.dp)
+            .height(190.dp)
+            .clip(RoundedCornerShape(14.dp))
             .clickable { onClick() }
     ) {
         AsyncImage(
@@ -155,26 +167,49 @@ fun AlbumCard(album: Album, onClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Brush.verticalGradient(
-                    listOf(Color.Transparent, Color.Black.copy(alpha = 0.7f))
-                ))
+                .background(
+                    Brush.verticalGradient(
+                        listOf(Color.Transparent, Color.Black.copy(alpha = 0.75f)),
+                        startY = 80f
+                    )
+                )
         )
         Column(
-            modifier = Modifier.align(Alignment.BottomStart).padding(10.dp)
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(start = 10.dp, bottom = 10.dp, end = 40.dp)
         ) {
-            Text(album.title, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 13.sp, maxLines = 1)
-            Text(album.artist, color = Color.White.copy(alpha = 0.8f), fontSize = 11.sp, maxLines = 1)
+            Text(
+                album.title,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 13.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                album.artist,
+                color = Color.White.copy(alpha = 0.8f),
+                fontSize = 11.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         }
         Box(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(10.dp)
-                .size(32.dp)
+                .padding(8.dp)
+                .size(34.dp)
                 .clip(CircleShape)
                 .background(Purple),
             contentAlignment = Alignment.Center
         ) {
-            Icon(Icons.Default.PlayArrow, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
+            Icon(
+                Icons.Default.PlayArrow,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(20.dp)
+            )
         }
     }
 }
@@ -184,11 +219,11 @@ fun RecentlyPlayedItem(album: Album, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp)
+            .padding(horizontal = 16.dp, vertical = 5.dp)
             .clickable { onClick() },
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
         Row(
             modifier = Modifier.padding(10.dp),
@@ -198,11 +233,29 @@ fun RecentlyPlayedItem(album: Album, onClick: () -> Unit) {
                 model = album.image,
                 contentDescription = album.title,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.size(48.dp).clip(RoundedCornerShape(8.dp))
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(RoundedCornerShape(8.dp))
             )
-            Column(modifier = Modifier.weight(1f).padding(start = 12.dp)) {
-                Text(album.title, fontWeight = FontWeight.SemiBold, fontSize = 14.sp, maxLines = 1)
-                Text("${album.artist} • Popular Song", color = Color.Gray, fontSize = 12.sp, maxLines = 1)
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 12.dp)
+            ) {
+                Text(
+                    album.title,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    "${album.artist} • Popular Song",
+                    color = Color.Gray,
+                    fontSize = 12.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
             Icon(Icons.Default.MoreVert, contentDescription = null, tint = Color.Gray)
         }
@@ -210,14 +263,19 @@ fun RecentlyPlayedItem(album: Album, onClick: () -> Unit) {
 }
 
 @Composable
-fun MiniPlayer(album: Album, isPlaying: Boolean, onPlayPause: () -> Unit, modifier: Modifier = Modifier) {
+fun MiniPlayer(
+    album: Album,
+    isPlaying: Boolean,
+    onPlayPause: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(12.dp),
-        shape = RoundedCornerShape(16.dp),
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF2D1B4E)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
     ) {
         Row(
             modifier = Modifier.padding(12.dp),
@@ -227,25 +285,43 @@ fun MiniPlayer(album: Album, isPlaying: Boolean, onPlayPause: () -> Unit, modifi
                 model = album.image,
                 contentDescription = album.title,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.size(44.dp).clip(RoundedCornerShape(8.dp))
+                modifier = Modifier
+                    .size(46.dp)
+                    .clip(RoundedCornerShape(10.dp))
             )
-            Column(modifier = Modifier.weight(1f).padding(start = 12.dp)) {
-                Text(album.title, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 13.sp, maxLines = 1)
-                Text(album.artist, color = Color.White.copy(alpha = 0.7f), fontSize = 11.sp)
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 12.dp)
+            ) {
+                Text(
+                    album.title,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 13.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    album.artist,
+                    color = Color.White.copy(alpha = 0.65f),
+                    fontSize = 11.sp,
+                    maxLines = 1
+                )
             }
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(42.dp)
                     .clip(CircleShape)
                     .background(Color.White)
                     .clickable { onPlayPause() },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = if (isPlaying) Icons.Default.PlayArrow else Icons.Default.PlayArrow,
+                    Icons.Default.PlayArrow,
                     contentDescription = null,
                     tint = Color(0xFF2D1B4E),
-                    modifier = Modifier.size(22.dp)
+                    modifier = Modifier.size(24.dp)
                 )
             }
         }
